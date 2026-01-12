@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Dashboard</title>
+
+    <style>
+        :root {
+            --bg-main: #FFF2C6;
+            --bg-secondary: #FFF8DE;
+            --accent-primary: #AAC4F5;
+            --accent-secondary: #8CA9FF;
+            --text-main: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            padding: 10px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--white);
+            padding: 6px;
+            border-radius: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+        }
+
+        .btn-baru{
+            background-color: #AAC4F5;
+            padding: 20px 20px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: capitalize;
+
+        }
+
+        /* Section */
+        .section {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-2 {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: auto;
+            margin-bottom: 20px;
+        }
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    width: 400px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.modal-content h2{
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+.form-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #FFA4A4;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-group select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #FFA4A4;
+}
+
+#successModal {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#successModal.show {
+    display: block;
+    opacity: 1;
+}
+
+#successModal .modal-content {
+    transform: scale(0.8);
+    transition: transform 0.4s ease;
+}
+
+#successModal.show .modal-content {
+    transform: scale(1);
+}
+
+.menu-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.dog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.dog-table th {
+    background: #AAC4F5;
+    padding: 10px;
+    text-align: center;
+}
+
+.dog-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.dog-table tr:hover {
+    background: #FFF8DE;
+}
+
+.dog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+
+.dog-table th {
+    background-color: #AAC4F5;
+    font-weight: bold;
+}
+
+
+/* STATUS */
+.status {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status.aktif {
+    color: green;
+}
+
+.status.mati {
+    color: red;
+}
+
+/* BUTTON EDIT */
+.btn-edit {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #8CA9FF;
+    font-weight: 600;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.filter-bar select {
+    padding: 2px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: red;
+    font-weight: bold;
+}
+
+.btn-edit {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #8CA9FF;
+    font-weight: 600;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #8CA9FF; /* sesuai warna aksen */
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* TABLE MOBILE */
+@media (max-width: 768px) {
+
+    /* MAIN PADDING */
+    .main {
+        padding: 15px;
+    }
+
+    /* MODAL */
+    .modal-content {
+        width: 95% !important;
+        margin: 20% auto;
+        padding: 15px;
+    }
+
+    /* MENU BUTTONS STACK */
+    .menu-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    /* FILTER BAR STACK */
+    .filter-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+        width: 100%;
+    }
+
+    /* BUTTON FULL WIDTH */
+    .btn-baru,
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+
+    /* TABLE FONT */
+    .dog-table th,
+    .dog-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    /* EDIT BUTTON */
+    .btn-edit {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
+
+/* EXTRA SMALL PHONE */
+@media (max-width: 480px) {
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .header p {
+        font-size: 12px;
+    }
+
+    .modal-content h2 {
+        font-size: 16px;
+    }
+
+}
+
+    </style>
+
+</head>
+<body>
+<div class="container">
+<main class="main">
+
+<div class="header">
+    <h1>🐾 Paw Von Valeska 🐾</h1>
+    <p>Ringkasan data dan informasi anjing</p>
+</div>
+
+<div class="section-2">
+    <button class="btn-baru" onclick="openMenu('menuNamaModal','nama')">Kelola Nama</button>
+    <button class="btn-baru" onclick="openMenu('menuLoopModal','loop')">Kelola Loop</button>
+    <button class="btn-baru" onclick="openMenu('menuKawinModal','kawin')">Kelola Kawin</button>
+    <button class="btn-baru" onclick="openMenu('menuPengobatanModal','pengobatan')">
+        Kelola Pengobatan
+    </button>
+
+    <!-- ===== MENU NAMA ===== -->
+    <div id="menuNamaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('menuNamaModal')">&times;</span>
+            <h2>Kelola Nama</h2>
+            <div class="menu-buttons">
+                <button class="btn-baru" onclick="openInput('nama')">Input Nama</button>
+                <button class="btn-baru" onclick="openList('nama')">Lihat Nama</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== INPUT NAMA ===== -->
+    <div id="inputModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('inputModal')">&times;</span>
+            <h2>Input Nama Paw</h2>
+            <form class="form-card" onsubmit="saveData(event)">
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" id="nama" placeholder="Masukkan nama" required>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Lahir</label>
+                    <input type="date" id="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <select id="kelamin" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="JANTAN">Jantan</option>
+                        <option value="BETINA">Betina</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('inputModal')">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== LIST NAMA ===== -->
+    <div id="listModal" class="modal">
+        <div class="modal-content" style="width:90%; max-width:900px">
+            <span class="close" onclick="closeModal('listModal')">&times;</span>
+            <h2>Daftar Nama Paw</h2>
+            <div class="filter-bar">
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                </select>
+                <select id="filterGender">
+                    <option value="">Semua Kelamin</option>
+                    <option value="JANTAN">Jantan</option>
+                    <option value="BETINA">Betina</option>
+                </select>
+                <select id="filterAge">
+                    <option value="">Urutkan Umur</option>
+                    <option value="oldest">Paling Lama</option>
+                    <option value="youngest">Paling Muda</option>
+                </select>
+                <input type="text" id="searchName" placeholder="Cari nama..." />
+            </div>
+            <table class="dog-table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="dogTableBody"></tbody>
+            </table>
+            <div id="pagination" style="margin-top:10px; text-align:center;"></div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div id="editModal" class="modal">
+        <div class="modal-content" style="max-width:500px">
+            <span class="close" onclick="closeModal('editModal')">&times;</span>
+            <h2>Edit Status Anjing</h2>
+            <form id="editForm" class="form-card" onsubmit="saveEdit(event)">
+                <div class="form-group">
+                    <label>Status</label>
+                    <label class="switch">
+                        <input type="checkbox" id="editStatus">
+                        <span class="slider round"></span>
+                    </label>
+                    <span id="statusText">Aktif</span>
+                </div>
+                <div class="form-group" id="deathDateGroup" style="display:none;">
+                    <label>Tanggal Kematian</label>
+                    <input type="date" id="deathDate">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- SUKSES MODAL -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <p id="successText"></p>
+        </div>
+    </div>
+
+
+<!-- ===== MENU LOOP ===== -->
+    <div id="menuLoopModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('menuLoopModal')">&times;</span>
+            <h2>Kelola Loop</h2>
+            <div class="menu-buttons">
+            <button class="btn-baru" onclick="openInput('loop')">Input Loop</button>
+            <button class="btn-baru" onclick="openList('loop')">Lihat Loop</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- === INPUT LOOP === -->
+    <div id="inputLoopModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('inputLoopModal')">&times;</span>
+            <h2>Input Loop</h2>
+            <form class="form-card" onsubmit="saveLoop(event)">
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" id="loopNama">
+            </div>
+            <div class="form-group">
+                <label>Tanggal Loop</label>
+                <input type="date" id="loopTanggal">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('inputLoopModal')">Batal</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- === LIST LOOP === -->
+    <div id="listLoopModal" class="modal">
+        <div class="modal-content" style="width:80%">
+            <span class="close" onclick="closeModal('listLoopModal')">&times;</span>
+            <h2>Daftar Loop</h2>
+            <input type="text" id="searchLoopName" placeholder="Cari nama..." style="margin-bottom:10px; padding:8px; width:100%; border-radius:6px; border:1px solid #ccc;">
+            <table class="dog-table">
+            <thead>
+                <tr>
+                <th>Nama</th>
+                <th>Tanggal Loop</th>
+                </tr>
+            </thead>
+            <tbody id="loopTableBody"></tbody>
+            </table>
+            <div id="loopPagination" style="margin-top:10px; text-align:center;"></div>
+        </div>
+    </div>
+
+
+    <!-- ===== MENU KAWIN ===== -->
+   <div id="menuKawinModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('menuKawinModal')">&times;</span>
+            <h2>Kelola Kawin</h2>
+            <form class="form-card" onsubmit="saveKawin(event)">
+            <div class="menu-buttons">
+            <button class="btn-baru" onclick="openInput('kawin')">Input Kawin</button>
+            <button class="btn-baru" onclick="openList('kawin')">Lihat Kawin</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+<!-- === INPUT KAWIN === -->
+<div id="inputKawinModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('inputKawinModal')">&times;</span>
+        <h2>Input Kawin</h2>
+        <form id="kawinForm" class="form-card" onsubmit="saveKawin(event)">
+            <div class="form-group">
+                <label>Nama Betina</label>
+                <input type="text" id="betinaInput" placeholder="Masukkan nama betina">
+            </div>
+            <div class="form-group">
+                <label>Nama Jantan</label>
+                <input type="text" id="jantanInput" placeholder="Masukkan nama jantan">
+            </div>
+            <div class="form-group">
+                <label>Tanggal Kawin</label>
+                <input type="date" id="kawinTanggal">
+            </div>
+            <div id="kawinError" style="color:red; display:none;"></div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('inputKawinModal')">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- === LIST KAWIN === -->
+<div id="listKawinModal" class="modal">
+    <div class="modal-content" style="width:80%">
+        <span class="close" onclick="closeModal('listKawinModal')">&times;</span>
+        <h2>Daftar Kawin</h2>
+        <div class="filter-bar">
+            <input type="text" id="searchKawin" placeholder="Cari betina/jantan..." style="margin-bottom:10px; padding:8px; width:100%; border-radius:6px; border:1px solid #ccc;"/>
+        </div>
+        <table class="dog-table">
+            <thead>
+                <tr>
+                    <th>Betina</th>
+                    <th>Jantan</th>
+                    <th>Tanggal Kawin</th>
+                </tr>
+            </thead>
+            <tbody id="kawinTableBody"></tbody>
+        </table>
+        <div id="kawinPagination" style="margin-top:10px; text-align:center;"></div>
+    </div>
+</div>
+
+<!-- ===== MENU PENGOBATAN ===== -->
+<div id="menuPengobatanModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('menuPengobatanModal')">&times;</span>
+        <h2>Kelola Pengobatan</h2>
+        <div class="menu-buttons">
+            <button class="btn-baru" onclick="openInput('pengobatan')">Input Pengobatan</button>
+            <button class="btn-baru" onclick="openList('pengobatan')">Lihat Pengobatan</button>
+        </div>
+    </div>
+</div>
+
+<!-- === INPUT PENGOBATAN === -->
+<div id="inputPengobatanModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('inputPengobatanModal')">&times;</span>
+        <h2>Input Pengobatan</h2>
+
+        <form id="pengobatanForm" class="form-card" onsubmit="savePengobatan(event)">
+            <div class="form-group">
+                <label>Tanggal</label>
+                <input type="date" id="obatTanggal" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" id="obatNama" placeholder="Nama Paw" required>
+            </div>
+
+            <div class="form-group">
+                <label>Type Pengobatan</label>
+                <select id="obatType" required>
+                    <option value="">-- Pilih --</option>
+                    <option value="VAKSIN">Vaksin</option>
+                    <option value="OBAT CACING">Obat Cacing</option>
+                    <option value="OBAT KUTU">Obat Kutu</option>`
+                    <option value="OBAT WAJIB">Obat Wajib</option>
+                    <option value="ANTIBIOTIK">Antibiotik</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Keterangan</label>
+                <input type="text" id="obatKeterangan" placeholder="Keterangan tambahan">
+            </div>
+
+            <div id="pengobatanError" style="color:red; display:none;"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('inputPengobatanModal')">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- === LIST PENGOBATAN === -->
+<div id="listPengobatanModal" class="modal">
+    <div class="modal-content" style="width:85%">
+        <span class="close" onclick="closeModal('listPengobatanModal')">&times;</span>
+        <h2>Daftar Pengobatan</h2>
+
+        <div class="filter-bar">
+            <input type="text" id="searchObatNama" placeholder="Cari nama..." style="margin-bottom:10px; padding:8px; width:100%; border-radius:6px; border:1px solid #ccc;">
+            <select id="filterObatType">
+                <option value="">Semua Type</option>
+                <option value="VAKSIN">Vaksin</option>
+                <option value="OBAT CACING">Obat Cacing</option>
+                <option value="OBAT KUTU">Obat Kutu</option>
+                <option value="OBAT WAJIB">Obat Wajib</option>
+                <option value="ANTIBIOTIK">Antibiotik</option>
+            </select>
+        </div>
+
+        <table class="dog-table">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Type Pengobatan</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody id="pengobatanTableBody"></tbody>
+        </table>
+
+        <div id="pengobatanPagination" style="margin-top:10px; text-align:center;"></div>
+    </div>
+</div>
+
+</div>
+</main>
+<!-- </div>
+
+
+</div>
+</main>
+</div> -->
+
+
+
+
+
+<script>
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
+
+
+let activeMenuModal = null;
+let activeType = null;
+
+function openModal(id){
+    const modal = document.getElementById(id);
+    if(modal) modal.style.display = "block";
+ }
+
+function closeModal(id){
+  const modal = document.getElementById(id);
+  if(!modal) return;
+
+  modal.style.display = "none";
+
+  // RESET FILTER KHUSUS
+  if(id === "listLoopModal"){
+    resetModalFilters("listLoopModal");
+    allLoops = [];
+    document.getElementById("loopTableBody").innerHTML = "";
+  }
+
+  if(id === "listModal"){
+    resetModalFilters("listModal");
+    currentPage = 1;
+    renderTable();
+  }
+  if(id === "listLoopModal"){
+  currentLoopPage = 1;
+  allLoops = [];
+  document.getElementById("loopTableBody").innerHTML = "";
+  document.getElementById("loopPagination").innerHTML = "";
+  }
+}
+
+
+function openMenu(menuId, type){
+  // tutup & reset semua modal
+  ["listLoopModal","listModal","inputLoopModal","menuKawinModal","menuNamaModal","menuLoopModal","menuPengobatanModal"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.style.display === "block"){
+      closeModal(id);
+    }
+  });
+
+  activeMenuModal = menuId;
+  activeType = type;
+  openModal(menuId);
+}
+
+function openInput(type){
+    if(activeMenuModal) closeModal(activeMenuModal);
+
+    if(type === "nama") openModal("inputModal");
+    if(type === "loop") openModal("inputLoopModal");
+    if(type === "kawin") openModal("inputKawinModal");
+    if(type === "pengobatan") openModal("inputPengobatanModal");
+}
+
+async function openList(type){
+  if(activeMenuModal) closeModal(activeMenuModal);
+    
+  if(type === "nama"){
+    openModal("listModal");
+    await fetchDogs();
+  }
+
+  if(type === "loop"){
+    openModal("listLoopModal");
+    await fetchLoop();
+  }
+
+  if(type === "kawin"){
+    openModal("listKawinModal");
+    await fetchKawin();
+    }
+
+    if(type === "pengobatan"){
+    openModal("listPengobatanModal");
+    await fetchPengobatan();
+    }
+
+}
+
+/* ===== DATA URL ===== */
+const scriptURL ="https://script.google.com/macros/s/AKfycbwqAlUuG-Ze7cczFMCkGCedQRjPPCQWqUuHQwkFZxeHOZs8pPJV9cVU5QMqTTf2zaOP/exec";
+
+
+/* ===== SAVE DATA ===== */
+function saveData(e){
+    e.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const tanggal = document.getElementById("tanggal").value;
+    const kelamin = document.getElementById("kelamin").value;
+
+    const formData = new FormData();
+    formData.append("nama", nama);
+    formData.append("tanggal", tanggal);
+    formData.append("kelamin", kelamin);
+
+    fetch(scriptURL, { method: "POST", body: formData })
+      .then(res => res.json())
+      .then(res => {
+          if(res.success){
+              closeModal("inputModal");
+              showSuccess(nama, tanggal, kelamin);
+              document.querySelector(".form-card").reset();
+          } else {
+              alert("Gagal menyimpan data");
+          }
+      })
+      .catch(err => {
+          alert("Gagal menyimpan data (network)");
+          console.error(err);
+      });
+}
+
+function showSuccess(nama, tanggal, kelamin){
+    const modal = document.getElementById("successModal");
+    const text = document.getElementById("successText");
+
+    text.innerHTML = `
+        Data berhasil disimpan 🎉<br><br>
+        <b>Nama:</b> ${nama}<br>
+        <b>Tanggal Lahir:</b> ${tanggal}<br>
+        <b>Jenis Kelamin:</b> ${kelamin}
+    `;
+
+    modal.classList.add("show");
+
+    setTimeout(() => {
+        modal.classList.remove("show");
+    }, 3000);
+}
+
+/* ===== FETCH DATA ===== */
+let allDogs = [];
+let currentPage = 1;
+const rowsPerPage = 6;
+
+async function fetchDogs(){
+    try {
+        const res = await fetch(scriptURL);
+        allDogs = await res.json();
+        currentPage = 1;
+        renderTable();
+    } catch (err){
+        alert("Gagal ambil data");
+        console.error(err);
+    }
+}
+
+
+
+/* ===== FILTER EVENT ===== */
+document.addEventListener("DOMContentLoaded", () => {
+    ["filterStatus","filterGender","filterAge"].forEach(id => {
+        document.getElementById(id).addEventListener("change", () => {
+            currentPage = 1;
+            renderTable();
+        });
+    });
+
+    document.getElementById("searchName").addEventListener("input", () => {
+        currentPage = 1;
+        renderTable();
+    });
+});
+
+/* ===== RENDER TABLE ===== */
+function renderTable(){
+    const tbody = document.getElementById("dogTableBody");
+    tbody.innerHTML = "";
+
+    let filtered = [...allDogs];
+
+    const status = document.getElementById("filterStatus").value;
+    if(status !== "") filtered = filtered.filter(d => d.status == status);
+
+    const gender = document.getElementById("filterGender").value;
+    if(gender !== "") filtered = filtered.filter(d => d.kelamin === gender);
+
+    const age = document.getElementById("filterAge").value;
+    if(age === "oldest") filtered.sort((a,b)=>new Date(a.tanggalLahir)-new Date(b.tanggalLahir));
+    if(age === "youngest") filtered.sort((a,b)=>new Date(b.tanggalLahir)-new Date(a.tanggalLahir));
+
+    const search = document.getElementById("searchName").value.toLowerCase();
+    if(search) filtered = filtered.filter(d => d.nama.toLowerCase().includes(search));
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const pageData = filtered.slice(start, start + rowsPerPage);
+
+    pageData.forEach(dog => {
+        tbody.innerHTML += `
+        <tr>
+            <td>${dog.nama}</td>
+            <td>${dog.kelamin}</td>
+            <td>${dog.tanggalLahir ? new Date(dog.tanggalLahir).toLocaleDateString("id-ID") : "-"}</td>
+            <td class="${dog.status==1?'status-active':'status-inactive'}">
+                ${dog.status==1?'AKTIF':'TIDAK AKTIF'}
+            </td>
+            <td>
+                <button class="btn-edit" onclick="editDog(${dog.rowIndex})">EDIT</button>
+            </td>
+        </tr>`;
+    });
+
+    renderPagination(filtered.length);
+}
+
+/* ===== PAGINATION ===== */
+function renderPagination(totalRows){
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+    const div = document.getElementById("pagination");
+
+    div.innerHTML = `
+        <button ${currentPage===1?'disabled':''} onclick="changePage(${currentPage-1})">Prev</button>
+        <span> Page ${currentPage} of ${totalPages} </span>
+        <button ${currentPage===totalPages?'disabled':''} onclick="changePage(${currentPage+1})">Next</button>
+    `;
+}
+
+function changePage(page){
+    currentPage = page;
+    renderTable();
+}
+
+/* ===== EDIT ===== */
+let currentEditRow = null;
+
+function editDog(rowIndex){
+    const dog = allDogs.find(d => d.rowIndex == rowIndex);
+    if(!dog) return alert("Data tidak ditemukan");
+
+    currentEditRow = rowIndex;
+
+    document.getElementById("editStatus").checked = dog.status == 1;
+    document.getElementById("statusText").innerText = dog.status == 1 ? "Aktif" : "Tidak Aktif";
+
+    const deathGroup = document.getElementById("deathDateGroup");
+    const deathInput = document.getElementById("deathDate");
+
+    if(dog.status == 0){
+        deathGroup.style.display = "block";
+        deathInput.value = dog.tanggalKematian || "";
+    } else {
+        deathGroup.style.display = "none";
+        deathInput.value = "";
+    }
+
+    openModal("editModal");
+}
+
+document.getElementById("editStatus").addEventListener("change", function(){
+    document.getElementById("deathDateGroup").style.display = this.checked ? "none" : "block";
+    document.getElementById("statusText").innerText = this.checked ? "Aktif" : "Tidak Aktif";
+});
+
+function saveEdit(e){
+    e.preventDefault();
+    if(currentEditRow === null) return;
+
+    const status = document.getElementById("editStatus").checked ? 1 : 0;
+    const tanggalKematian = document.getElementById("deathDate").value || null;
+
+    if(status === 0 && !tanggalKematian)
+        return alert("Tanggal kematian wajib diisi");
+
+    const formData = new FormData();
+    formData.append("action","edit");
+    formData.append("rowIndex",currentEditRow);
+    formData.append("status",status);
+    formData.append("tanggalKematian",tanggalKematian);
+
+    fetch(scriptURL,{method:"POST",body:formData})
+    .then(res=>res.text())
+    .then(()=>{
+        closeModal("editModal");
+        fetchDogs();
+        showSuccess2();
+    })
+    .catch(err=>{ alert("Gagal update data"); console.error(err); });
+}
+
+function showSuccess2(nama, tanggal){
+    const modal = document.getElementById("successModal");
+    const text = document.getElementById("successText");
+
+    text.innerHTML = `
+        Data berhasil disimpan 🐾
+    `;
+
+    modal.classList.add("show");
+
+    setTimeout(() => {
+        modal.classList.remove("show");
+    }, 1500);
+}
+
+
+function saveLoop(e){
+  e.preventDefault();
+
+  const nama = document.getElementById("loopNama").value;
+  const tanggal = document.getElementById("loopTanggal").value;
+
+  const formData = new FormData();
+  formData.append("type", "loop");
+  formData.append("nama", nama);
+  formData.append("tanggal", tanggal);
+
+  fetch(scriptURL, { method: "POST", body: formData })
+    .then(res => res.json())
+    .then(res => {
+      if(res.success){
+        closeModal("inputLoopModal");
+        showSuccess2();
+        document.querySelector("#inputLoopModal form").reset();
+      }
+    })
+    .catch(err => {
+      alert("Gagal simpan loop");
+      console.error(err);
+    });
+}
+
+
+let allLoops = [];
+let currentLoopPage = 1;
+const rowsPerPageLoop = 6;
+
+function renderLoop(){
+  const tbody = document.getElementById("loopTableBody");
+  const search = document.getElementById("searchLoopName").value.toLowerCase();
+
+  tbody.innerHTML = "";
+
+  let filtered = [...allLoops];
+
+  if(search){
+    filtered = filtered.filter(d =>
+      d.nama.toLowerCase().includes(search)
+    );
+  }
+
+  const start = (currentLoopPage - 1) * rowsPerPageLoop;
+  const pageData = filtered.slice(start, start + rowsPerPageLoop);
+
+  pageData.forEach(d => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${d.nama}</td>
+        <td>${new Date(d.tanggal).toLocaleDateString("id-ID")}</td>
+      </tr>
+    `;
+  });
+
+  renderLoopPagination(filtered.length);
+}
+
+function renderLoopPagination(totalRows){
+  const totalPages = Math.ceil(totalRows / rowsPerPageLoop);
+  const div = document.getElementById("loopPagination");
+
+  div.innerHTML = `
+    <button ${currentLoopPage===1?'disabled':''} onclick="changeLoopPage(${currentLoopPage-1})">Prev</button>
+    <span> Page ${currentLoopPage} of ${totalPages} </span>
+    <button ${currentLoopPage===totalPages?'disabled':''} onclick="changeLoopPage(${currentLoopPage+1})">Next</button>
+  `;
+}
+
+function changeLoopPage(page){
+  currentLoopPage = page;
+  renderLoop();
+}
+
+
+document.getElementById("searchLoopName")
+  .addEventListener("input", () => {
+    currentLoopPage = 1;
+    renderLoop();
+  });
+
+
+
+function renderLoop(){
+  const tbody = document.getElementById("loopTableBody");
+  const search = document.getElementById("searchLoopName").value.toLowerCase();
+
+  tbody.innerHTML = "";
+
+  let filtered = [...allLoops];
+
+  // FILTER SEARCH
+  if(search){
+    filtered = filtered.filter(d =>
+      d.nama.toLowerCase().includes(search)
+    );
+  }
+
+  // PAGINATION
+  const start = (currentLoopPage - 1) * rowsPerPageLoop;
+  const pageData = filtered.slice(start, start + rowsPerPageLoop);
+
+  pageData.forEach(d => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${d.nama}</td>
+        <td>${new Date(d.tanggal).toLocaleDateString("id-ID")}</td>
+      </tr>
+    `;
+  });
+
+  renderLoopPagination(filtered.length); // render tombol pagination
+}
+
+
+
+document.getElementById("searchLoopName").addEventListener("input", () => {
+    currentLoopPage = 1;
+    renderLoop();
+});
+
+function resetModalFilters(modalId){
+  const modal = document.getElementById(modalId);
+  if(!modal) return;
+
+  // reset semua input & select
+  modal.querySelectorAll("input").forEach(el => {
+    if(el.type === "checkbox") el.checked = false;
+    else el.value = "";
+  });
+
+  modal.querySelectorAll("select").forEach(el => {
+    el.selectedIndex = 0;
+  });
+}
+
+async function fetchLoop() {
+    try {
+        const res = await fetch(scriptURL + "?type=loop"); // misal endpoint loop
+        allLoops = await res.json();
+        currentLoopPage = 1;
+        renderLoop();
+    } catch (err) {
+        alert("Gagal ambil data loop");
+        console.error(err);
+    }
+}
+
+
+// MENU KAWIN
+
+
+let allKawin = [];
+let currentKawinPage = 1;
+const rowsPerPageKawin = 6;
+
+function saveKawin(e){
+    e.preventDefault();
+    console.log("saveKawin terpanggil"); // <--- ini penting cek
+
+    const betina = document.getElementById("betinaInput").value.trim();
+    const jantan = document.getElementById("jantanInput").value.trim();
+    const tanggal = document.getElementById("kawinTanggal").value;
+    const errorDiv = document.getElementById("kawinError");
+
+    if(!betina || !jantan || !tanggal){
+        errorDiv.innerText = "Semua kolom wajib diisi!";
+        errorDiv.style.display = "block";
+        return;
+    } 
+    errorDiv.style.display = "none";
+
+    const formData = new FormData();
+    formData.append("type", "kawin");
+    formData.append("betina", betina);
+    formData.append("jantan", jantan);
+    formData.append("tanggal", tanggal);
+
+    fetch(scriptURL, { method: "POST", body: formData })
+    .then(res => res.json())
+    .then(res => {
+        console.log("response:", res); // cek server respon
+        if(res.success){
+            closeModal("inputKawinModal");
+            showSuccess2();
+            document.getElementById("kawinForm").reset();
+            fetchKawin();
+        } else {
+            errorDiv.innerText = "Gagal menyimpan data kawin!";
+            errorDiv.style.display = "block";
+        }
+    })
+    .catch(err => {
+        errorDiv.innerText = "Gagal menyimpan data kawin (network)!";
+        errorDiv.style.display = "block";
+        console.error(err);
+    });
+}
+
+// Fetch kawin
+async function fetchKawin(){
+    try {
+        const res = await fetch(scriptURL + "?type=kawin");
+        allKawin = await res.json();
+        currentKawinPage = 1;
+        renderKawin();
+    } catch(err){
+        alert("Gagal ambil data kawin");
+        console.error(err);
+    }
+}
+
+// Render kawin dengan search & pagination
+function renderKawin(){
+    const tbody = document.getElementById("kawinTableBody");
+    const search = document.getElementById("searchKawin").value.toLowerCase();
+    tbody.innerHTML = "";
+
+    let filtered = [...allKawin];
+
+    if(search){
+        filtered = filtered.filter(d =>
+            d.betina.toLowerCase().includes(search) ||
+            d.jantan.toLowerCase().includes(search)
+        );
+    }
+
+    const start = (currentKawinPage - 1) * rowsPerPageKawin;
+    const pageData = filtered.slice(start, start + rowsPerPageKawin);
+
+    pageData.forEach(d => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${d.betina}</td>
+                <td>${d.jantan}</td>
+                <td>${new Date(d.tanggal).toLocaleDateString("id-ID")}</td>
+            </tr>
+        `;
+    });
+
+    renderKawinPagination(filtered.length);
+}
+
+// Pagination Kawin
+function renderKawinPagination(totalRows){
+    const totalPages = Math.ceil(totalRows / rowsPerPageKawin);
+    const div = document.getElementById("kawinPagination");
+
+    div.innerHTML = `
+        <button ${currentKawinPage===1?'disabled':''} onclick="changeKawinPage(${currentKawinPage-1})">Prev</button>
+        <span> Page ${currentKawinPage} of ${totalPages} </span>
+        <button ${currentKawinPage===totalPages?'disabled':''} onclick="changeKawinPage(${currentKawinPage+1})">Next</button>
+    `;
+}
+
+function changeKawinPage(page){
+    currentKawinPage = page;
+    renderKawin();
+}
+
+// Event search input
+document.getElementById("searchKawin").addEventListener("input", () => {
+    currentKawinPage = 1;
+    renderKawin();
+});
+
+
+
+
+//pengobatan
+function savePengobatan(e){
+    e.preventDefault();
+
+    const nama = document.getElementById("obatNama").value.trim();
+    const tanggal = document.getElementById("obatTanggal").value;
+    const type = document.getElementById("obatType").value;
+    const keterangan = document.getElementById("obatKeterangan").value;
+    const errorDiv = document.getElementById("pengobatanError");
+
+    if(!nama || !tanggal || !type){
+        errorDiv.innerText = "Nama, tanggal dan type wajib diisi!";
+        errorDiv.style.display = "block";
+        return;
+    }
+
+    errorDiv.style.display = "none";
+
+    const formData = new FormData();
+    formData.append("type", "pengobatan");
+    formData.append("nama", nama);
+    formData.append("tanggal", tanggal);
+    formData.append("pengobatan", type);
+    formData.append("keterangan", keterangan);
+
+    fetch(scriptURL, { method:"POST", body:formData })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success){
+                closeModal("inputPengobatanModal");
+                showSuccess2();
+                document.getElementById("pengobatanForm").reset();
+                fetchPengobatan();
+            } else {
+                errorDiv.innerText = "Gagal menyimpan data!";
+                errorDiv.style.display = "block";
+            }
+        })
+        .catch(err => {
+            errorDiv.innerText = "Gagal simpan (network)";
+            errorDiv.style.display = "block";
+            console.error(err);
+        });
+}
+
+
+let allPengobatan = [];
+let currentPengobatanPage = 1;
+const rowsPerPagePengobatan = 6;
+
+async function fetchPengobatan(){
+    try{
+        const res = await fetch(scriptURL + "?type=pengobatan");
+        allPengobatan = await res.json();
+        currentPengobatanPage = 1;
+        renderPengobatan();
+    } catch(err){
+        alert("Gagal ambil data pengobatan");
+        console.error(err);
+    }
+}
+
+function renderPengobatan(){
+    const tbody = document.getElementById("pengobatanTableBody");
+    const search = document.getElementById("searchObatNama").value.toLowerCase();
+    const filterType = document.getElementById("filterObatType").value;
+
+    tbody.innerHTML = "";
+    let filtered = [...allPengobatan];
+
+    if(search){
+        filtered = filtered.filter(d => d.nama.toLowerCase().includes(search));
+    }
+
+    if(filterType){
+        filtered = filtered.filter(d => d.pengobatan === filterType);
+    }
+
+    const start = (currentPengobatanPage - 1) * rowsPerPagePengobatan;
+    const pageData = filtered.slice(start, start + rowsPerPagePengobatan);
+
+    pageData.forEach(d => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${d.nama}</td>
+                <td>${d.pengobatan}</td>
+                <td>${new Date(d.tanggal).toLocaleDateString("id-ID")}</td>
+                <td>${d.keterangan || "-"}</td>
+            </tr>
+        `;
+    });
+
+    renderPengobatanPagination(filtered.length);
+}
+
+function renderPengobatanPagination(totalRows){
+    const totalPages = Math.ceil(totalRows / rowsPerPagePengobatan);
+    const div = document.getElementById("pengobatanPagination");
+
+    div.innerHTML = `
+        <button ${currentPengobatanPage===1?'disabled':''} onclick="changePengobatanPage(${currentPengobatanPage-1})">Prev</button>
+        <span> Page ${currentPengobatanPage} of ${totalPages} </span>
+        <button ${currentPengobatanPage===totalPages?'disabled':''} onclick="changePengobatanPage(${currentPengobatanPage+1})">Next</button>
+    `;
+}
+
+function changePengobatanPage(page){
+    currentPengobatanPage = page;
+    renderPengobatan();
+}
+
+document.getElementById("searchObatNama").addEventListener("input", () => {
+    currentPengobatanPage = 1;
+    renderPengobatan();
+});
+
+document.getElementById("filterObatType").addEventListener("change", () => {
+    currentPengobatanPage = 1;
+    renderPengobatan();
+});
+
+</script>
+
+</body>
+</html>
