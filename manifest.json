@@ -8,15 +8,16 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "ixcon192.png",
+      "src": "ixcon192.png.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "ixcon512.png",
+      "src": "ixcon512.png.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
 }
+
 
