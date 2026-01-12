@@ -1,7 +1,7 @@
 {
   "name": "Von Valeska Paw",
   "short_name": "Von Valeska",
-  "start_url": "/",
+  "start_url": "/VonValeska/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
@@ -19,3 +19,4 @@
     }
   ]
 }
+
